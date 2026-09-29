@@ -1,0 +1,4 @@
+Add your profile photo here and name it: avatar.jpg
+
+Then update the path in src/data/portfolio.ts:
+  avatar: "/avatar.jpg"

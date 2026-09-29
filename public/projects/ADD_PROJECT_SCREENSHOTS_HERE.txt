@@ -1,0 +1,7 @@
+Add project screenshot images here:
+- project1.png  → Replace placeholder for Project 1
+- project2.png  → Replace placeholder for Project 2
+- project3.png  → Replace placeholder for Project 3
+- project4.png  → Replace placeholder for Project 4
+
+Then update the image paths in src/data/portfolio.ts under the projects array.
