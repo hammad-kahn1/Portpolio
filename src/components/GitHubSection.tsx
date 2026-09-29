@@ -2,43 +2,20 @@
 
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
-import { Github, Star, GitFork, ExternalLink, Code2 } from 'lucide-react'
+import { Github, Star, GitFork, ExternalLink, Code2, Linkedin } from 'lucide-react'
 import { personalInfo } from '@/data/portfolio'
+import { githubConfig } from '@/data/githubData'
 
-const placeholderRepos = [
-  {
-    name: 'project-alpha',
-    description: 'A mobile application built with Flutter featuring beautiful UI and real-time features.',
-    language: 'Dart',
-    stars: 12,
-    forks: 3,
-    href: personalInfo.github,
-  },
-  {
-    name: 'web-portfolio',
-    description: 'My personal portfolio website built with Next.js, TypeScript, and Tailwind CSS.',
-    language: 'TypeScript',
-    stars: 8,
-    forks: 2,
-    href: personalInfo.github,
-  },
-  {
-    name: 'flutter-ui-kit',
-    description: 'A collection of beautiful Flutter UI components and screens.',
-    language: 'Dart',
-    stars: 24,
-    forks: 7,
-    href: personalInfo.github,
-  },
-  {
-    name: 'react-components',
-    description: 'Reusable React components with TypeScript and modern design patterns.',
-    language: 'TypeScript',
-    stars: 15,
-    forks: 4,
-    href: personalInfo.github,
-  },
-]
+// One known public repo — fetched live in FeaturedProjects.
+// Keeping this section for the contribution graph + profile link.
+const profileRepo = {
+  name: 'habiba-portfolio',
+  description: 'My personal portfolio website built with Next.js, TypeScript, and Tailwind CSS.',
+  language: 'TypeScript',
+  stars: 0,
+  forks: 0,
+  href: githubConfig.profileUrl,
+}
 
 // Contribution heatmap
 function ContributionGraph() {
@@ -104,15 +81,28 @@ export default function GitHubSection() {
               Constantly building, exploring, and committing. Here&apos;s a peek at my coding activity.
             </p>
           </div>
-          <a
-            href={personalInfo.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-primary flex items-center gap-2 text-sm py-2 px-4"
-          >
-            <Github size={15} />
-            Follow on GitHub
-          </a>
+          <div className="flex items-center gap-3 flex-wrap">
+            <a
+              id="github-follow-btn"
+              href={githubConfig.profileUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary flex items-center gap-2 text-sm py-2 px-4"
+            >
+              <Github size={15} />
+              View GitHub Repository
+            </a>
+            <a
+              id="linkedin-connect-btn"
+              href={personalInfo.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-secondary flex items-center gap-2 text-sm py-2 px-4"
+            >
+              <Linkedin size={15} />
+              LinkedIn
+            </a>
+          </div>
         </motion.div>
 
         {/* Contribution graph */}
@@ -151,51 +141,59 @@ export default function GitHubSection() {
           </div>
         </motion.div>
 
-        {/* Repo cards */}
+        {/* Single real profile repo card */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {placeholderRepos.map((repo, i) => (
-            <motion.a
-              key={repo.name}
-              href={repo.href}
+          <motion.a
+            key={profileRepo.name}
+            href={profileRepo.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            initial={{ opacity: 0, y: 24 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            whileHover={{ y: -5 }}
+            className="card p-5 block group"
+          >
+            <div className="w-full h-0.5 bg-[#111111] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300 mb-4 rounded-full" />
+            <div className="flex items-start justify-between mb-3">
+              <div className="flex items-center gap-2">
+                <Github size={15} className="text-[#555555]" />
+                <span className="text-sm font-semibold text-[#111111]">
+                  {profileRepo.name}
+                </span>
+              </div>
+              <ExternalLink size={13} className="text-[#cccccc] group-hover:text-[#555555] transition-colors" />
+            </div>
+            <p className="text-xs text-[#777777] leading-relaxed mb-4">{profileRepo.description}</p>
+            <div className="flex items-center gap-4 text-xs text-[#999999]">
+              <span className="flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-[#3178c6] inline-block" />
+                {profileRepo.language}
+              </span>
+              <span className="flex items-center gap-1"><Star size={11} /> {profileRepo.stars}</span>
+              <span className="flex items-center gap-1"><GitFork size={11} /> {profileRepo.forks}</span>
+            </div>
+          </motion.a>
+          {/* More repos shown in the GitHub Projects section below */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="card p-5 flex flex-col items-center justify-center text-center gap-3"
+          >
+            <Github size={28} className="text-[#cccccc]" />
+            <p className="text-sm text-[#999999] leading-relaxed">
+              More repositories are shown in the <strong className="text-[#555555]">GitHub Projects</strong> section below.
+            </p>
+            <a
+              href={githubConfig.profileUrl}
               target="_blank"
               rel="noopener noreferrer"
-              initial={{ opacity: 0, y: 24 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.3 + i * 0.1 }}
-              whileHover={{ y: -5 }}
-              className="card p-5 block group"
+              className="text-xs text-[#555555] underline underline-offset-2 hover:text-[#111111] transition-colors"
             >
-              {/* Top bar on hover */}
-              <div className="w-full h-0.5 bg-[#111111] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300 mb-4 rounded-full" />
-
-              <div className="flex items-start justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <Github size={15} className="text-[#555555]" />
-                  <span className="text-sm font-semibold text-[#111111]">
-                    {repo.name}
-                  </span>
-                </div>
-                <ExternalLink size={13} className="text-[#cccccc] group-hover:text-[#555555] transition-colors" />
-              </div>
-
-              <p className="text-xs text-[#777777] leading-relaxed mb-4">{repo.description}</p>
-
-              <div className="flex items-center gap-4 text-xs text-[#999999]">
-                <span className="flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-[#111111] inline-block" />
-                  {repo.language}
-                </span>
-                <span className="flex items-center gap-1">
-                  <Star size={11} />
-                  {repo.stars}
-                </span>
-                <span className="flex items-center gap-1">
-                  <GitFork size={11} />
-                  {repo.forks}
-                </span>
-              </div>
-            </motion.a>
-          ))}
+              View full profile →
+            </a>
+          </motion.div>
         </div>
       </div>
     </section>

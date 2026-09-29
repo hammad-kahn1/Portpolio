@@ -10,6 +10,7 @@ import AppShowcase from '@/components/AppShowcase'
 import UIUX from '@/components/UIUX'
 import Experience from '@/components/Experience'
 import GitHubSection from '@/components/GitHubSection'
+import FeaturedProjects from '@/components/FeaturedProjects'
 import Contact from '@/components/Contact'
 import Footer from '@/components/Footer'
 
@@ -28,6 +29,7 @@ export default function Home() {
       <AppShowcase />
       <UIUX />
       <GitHubSection />
+      <FeaturedProjects />
       <Experience />
       <Contact />
       <Footer />

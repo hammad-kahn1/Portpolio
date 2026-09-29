@@ -1,7 +1,7 @@
 'use client'
 
 import { motion, useScroll, useTransform } from 'framer-motion'
-import { ArrowDown, ArrowUpRight, Star } from 'lucide-react'
+import { ArrowDown, ArrowUpRight, Star, Github } from 'lucide-react'
 import { personalInfo } from '@/data/portfolio'
 
 export default function Hero() {
@@ -81,11 +81,24 @@ export default function Hero() {
                 <span className="w-1.5 h-1.5 rounded-full bg-green-500 inline-block" />
                 Available for opportunities
               </div>
-              <div className="flex items-center gap-1 text-[#999999] text-sm">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} size={12} fill="#111111" className="text-[#111111]" />
-                ))}
-                <span className="ml-2 font-medium text-[#555555]">Passionate Developer</span>
+              <div className="flex items-center gap-3 flex-wrap">
+                <div className="flex items-center gap-1 text-[#999999] text-sm">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} size={12} fill="#111111" className="text-[#111111]" />
+                  ))}
+                  <span className="ml-2 font-medium text-[#555555]">Passionate Developer</span>
+                </div>
+                {/* GitHub profile badge */}
+                <a
+                  id="hero-github-badge"
+                  href={personalInfo.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#555555] bg-[#eeece8] border border-[#e0ddd7] px-3 py-1.5 rounded-full hover:bg-[#e0ddd7] hover:text-[#111111] transition-all duration-200"
+                >
+                  <Github size={12} />
+                  Building with code on GitHub
+                </a>
               </div>
             </motion.div>
 
@@ -156,14 +169,25 @@ export default function Hero() {
                 {/* Tech pill row */}
                 <div className="flex flex-wrap gap-2 mt-5">
                   {['Flutter', 'React', 'Next.js', 'TypeScript', 'Python'].map((t) => (
-                    <span
-                      key={t}
-                      className="skill-tag"
-                    >
+                    <span key={t} className="skill-tag">
                       {t}
                     </span>
                   ))}
                 </div>
+
+                {/* GitHub CTA */}
+                <motion.a
+                  id="hero-explore-github-btn"
+                  href={personalInfo.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 mt-5 text-xs font-semibold text-[#555555] hover:text-[#111111] transition-colors duration-200 group/gh"
+                  whileHover={{ x: 3 }}
+                >
+                  <Github size={14} />
+                  Explore My GitHub
+                  <ArrowUpRight size={12} className="transition-transform group-hover/gh:translate-x-0.5 group-hover/gh:-translate-y-0.5" />
+                </motion.a>
               </motion.div>
 
               {/* Right: CTA */}
