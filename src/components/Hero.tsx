@@ -1,221 +1,159 @@
 'use client'
 
 import { motion, useScroll, useTransform } from 'framer-motion'
-import { ArrowDown, ArrowUpRight, Star, Github } from 'lucide-react'
+import { ArrowDown, Github, Linkedin, MapPin } from 'lucide-react'
 import { personalInfo } from '@/data/portfolio'
 
 export default function Hero() {
   const { scrollY } = useScroll()
-  const y = useTransform(scrollY, [0, 600], [0, 80])
+  const y       = useTransform(scrollY, [0, 600], [0, 60])
   const opacity = useTransform(scrollY, [0, 350], [1, 0])
 
-  const scrollToProjects = () => {
-    document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })
-  }
-  const scrollToContact = () => {
-    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
-  }
+  const scrollTo = (id: string) =>
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
 
   return (
     <section
       id="home"
       className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-[#f7f6f3]"
     >
-      {/* Subtle texture lines */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div
-          className="absolute inset-0 opacity-[0.025]"
-          style={{
-            backgroundImage: `repeating-linear-gradient(
-              0deg,
-              #111 0px,
-              #111 1px,
-              transparent 1px,
-              transparent 80px
-            )`,
-          }}
-        />
-      </div>
-
-      {/* Floating decorative circle — top right */}
-      <motion.div
-        animate={{ rotate: 360 }}
-        transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
-        className="absolute top-16 right-12 w-52 h-52 rounded-full border border-[#e0ddd7] pointer-events-none hidden lg:block"
-      />
-      <motion.div
-        animate={{ rotate: -360 }}
-        transition={{ duration: 40, repeat: Infinity, ease: 'linear' }}
-        className="absolute top-20 right-16 w-40 h-40 rounded-full border border-[#e0ddd7]/60 pointer-events-none hidden lg:block"
+      {/* ── Subtle horizontal rules ───────────────── */}
+      <div
+        aria-hidden
+        className="absolute inset-0 pointer-events-none opacity-[0.018]"
+        style={{
+          backgroundImage:
+            'repeating-linear-gradient(0deg,#111 0px,#111 1px,transparent 1px,transparent 72px)',
+        }}
       />
 
-      {/* Floating small dots */}
-      {[
-        { x: '12%', y: '25%', delay: 0 },
-        { x: '88%', y: '40%', delay: 0.6 },
-        { x: '75%', y: '75%', delay: 1 },
-        { x: '20%', y: '78%', delay: 0.4 },
-      ].map((dot, i) => (
-        <motion.div
-          key={i}
-          className="absolute w-1.5 h-1.5 rounded-full bg-[#cccccc] pointer-events-none"
-          style={{ left: dot.x, top: dot.y }}
-          animate={{ scale: [1, 1.4, 1], opacity: [0.4, 0.8, 0.4] }}
-          transition={{ duration: 3 + i, delay: dot.delay, repeat: Infinity }}
-        />
-      ))}
+      {/* ── Availability dot — top left ───────────── */}
+      <motion.div
+        initial={{ opacity: 0, y: -14 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.55, duration: 0.5 }}
+        className="absolute top-24 left-6 lg:left-10 z-10 flex items-center gap-2"
+      >
+        <span className="relative flex h-2 w-2">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
+        </span>
+        <span className="text-xs font-medium text-[#888888] tracking-wide">
+          Open to opportunities
+        </span>
+      </motion.div>
 
-      {/* Main Content */}
+      {/* ── Social icons — top right ──────────────── */}
+      <motion.div
+        initial={{ opacity: 0, y: -14 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.6, duration: 0.5 }}
+        className="absolute top-24 right-6 lg:right-10 z-10 flex gap-2.5"
+      >
+        {[
+          { href: personalInfo.github,   Icon: Github,   label: 'GitHub'   },
+          { href: personalInfo.linkedin, Icon: Linkedin, label: 'LinkedIn' },
+        ].map(({ href, Icon, label }) => (
+          <a
+            key={label}
+            id={`hero-social-${label.toLowerCase()}`}
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={label}
+            className="w-10 h-10 rounded-full border border-[#e0ddd7] bg-white/70 backdrop-blur-sm flex items-center justify-center text-[#888888] hover:text-[#111111] hover:border-[#aaaaaa] transition-all duration-200"
+          >
+            <Icon size={15} />
+          </a>
+        ))}
+      </motion.div>
+
+      {/* ── Main content ─────────────────────────── */}
       <motion.div style={{ y, opacity }} className="relative z-10 w-full">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          <div className="pt-28 pb-16">
+          <div className="pt-32 pb-20">
 
-            {/* Top label row */}
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55, delay: 0.1 }}
-              className="flex items-center justify-between mb-6 flex-wrap gap-4"
-            >
-              <div className="label-tag">
-                <span className="w-1.5 h-1.5 rounded-full bg-green-500 inline-block" />
-                Available for opportunities
-              </div>
-              <div className="flex items-center gap-3 flex-wrap">
-                <div className="flex items-center gap-1 text-[#999999] text-sm">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} size={12} fill="#111111" className="text-[#111111]" />
-                  ))}
-                  <span className="ml-2 font-medium text-[#555555]">Passionate Developer</span>
-                </div>
-                {/* GitHub profile badge */}
-                <a
-                  id="hero-github-badge"
-                  href={personalInfo.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#555555] bg-[#eeece8] border border-[#e0ddd7] px-3 py-1.5 rounded-full hover:bg-[#e0ddd7] hover:text-[#111111] transition-all duration-200"
-                >
-                  <Github size={12} />
-                  Building with code on GitHub
-                </a>
-              </div>
-            </motion.div>
+            {/* Giant editorial name */}
+            <div className="overflow-hidden mb-0">
+              <motion.h1
+                initial={{ y: 80, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+                className="font-display font-black leading-[0.82] select-none"
+                style={{ fontSize: 'clamp(5rem, 14vw, 13rem)', letterSpacing: '-0.03em' }}
+              >
+                <span className="block text-[#111111]">HABIBA</span>
+                <span className="block text-[#111111]/[0.12]">SHAH</span>
+              </motion.h1>
+            </div>
 
-            {/* Large editorial heading */}
+            {/* Separator line with metadata */}
             <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.75, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="mb-0"
-            >
-              <h1 className="display-heading leading-[0.88]">
-                <span className="block">Port</span>
-                <span className="block italic text-[#555555]">folio</span>
-              </h1>
-            </motion.div>
-
-            {/* Horizontal rule with label */}
-            <motion.div
-              initial={{ opacity: 0, scaleX: 0 }}
-              animate={{ opacity: 1, scaleX: 1 }}
-              transition={{ duration: 0.7, delay: 0.5 }}
-              className="flex items-center gap-4 my-8 origin-left"
+              initial={{ scaleX: 0, opacity: 0 }}
+              animate={{ scaleX: 1, opacity: 1 }}
+              transition={{ duration: 0.9, delay: 0.55, ease: [0.16, 1, 0.3, 1] }}
+              className="flex items-center gap-5 my-8 lg:my-10 origin-left"
             >
               <div className="h-px flex-1 bg-[#e0ddd7]" />
-              <span className="text-xs font-semibold text-[#999999] tracking-widest uppercase whitespace-nowrap">
-                {personalInfo.location} · 2025
-              </span>
+              <div className="flex items-center gap-3 text-[0.65rem] font-semibold text-[#bbbbbb] tracking-[0.14em] uppercase whitespace-nowrap flex-wrap">
+                <span className="flex items-center gap-1">
+                  <MapPin size={9} />Peshawar, Pakistan
+                </span>
+                <span className="text-[#dddddd]">·</span>
+                <span>Software Engineering</span>
+                <span className="text-[#dddddd]">·</span>
+                <span>UET Peshawar</span>
+              </div>
               <div className="h-px flex-1 bg-[#e0ddd7]" />
             </motion.div>
 
-            {/* Content row: name + description + CTA */}
-            <div className="grid lg:grid-cols-3 gap-8 lg:gap-16 items-end">
-              {/* Left: Name & title */}
+            {/* Tagline + CTA row */}
+            <div className="grid lg:grid-cols-2 gap-10 lg:gap-20 items-end">
+
+              {/* Left: tagline + tech pills */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
+                transition={{ duration: 0.7, delay: 0.65 }}
               >
-                <div className="text-xs font-semibold tracking-widest text-[#999999] uppercase mb-2">My name is</div>
-                <h2 className="font-display text-3xl lg:text-4xl font-bold text-[#111111] leading-tight">
-                  {personalInfo.name}
-                </h2>
-                <p className="text-[#999999] text-sm mt-2 font-medium">
-                  Software Engineering Student & App Developer
-                </p>
-
-                {/* Profile avatar circle */}
-                <motion.div
-                  animate={{ y: [0, -8, 0] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-                  className="mt-6 w-20 h-20 rounded-full bg-[#111111] flex items-center justify-center text-white text-2xl font-display font-bold border-2 border-[#e0ddd7]"
-                >
-                  HS
-                </motion.div>
-              </motion.div>
-
-              {/* Center: Description */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.5 }}
-                className="lg:col-span-1"
-              >
-                <p className="text-[#555555] text-base leading-relaxed">
+                <p className="text-[#555555] text-base lg:text-lg leading-relaxed max-w-md">
                   {personalInfo.tagline}
                 </p>
-
-                {/* Tech pill row */}
                 <div className="flex flex-wrap gap-2 mt-5">
                   {['Flutter', 'React', 'Next.js', 'TypeScript', 'Python'].map((t) => (
-                    <span key={t} className="skill-tag">
-                      {t}
-                    </span>
+                    <span key={t} className="skill-tag text-xs">{t}</span>
                   ))}
                 </div>
-
-                {/* GitHub CTA */}
-                <motion.a
-                  id="hero-explore-github-btn"
-                  href={personalInfo.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 mt-5 text-xs font-semibold text-[#555555] hover:text-[#111111] transition-colors duration-200 group/gh"
-                  whileHover={{ x: 3 }}
-                >
-                  <Github size={14} />
-                  Explore My GitHub
-                  <ArrowUpRight size={12} className="transition-transform group-hover/gh:translate-x-0.5 group-hover/gh:-translate-y-0.5" />
-                </motion.a>
               </motion.div>
 
-              {/* Right: CTA */}
+              {/* Right: CTA buttons */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.6 }}
-                className="flex flex-col gap-3"
+                transition={{ duration: 0.7, delay: 0.75 }}
+                className="flex flex-col sm:flex-row lg:flex-col gap-3 lg:items-start"
               >
                 <motion.button
-                  onClick={scrollToProjects}
-                  className="btn-primary group w-full justify-center"
+                  id="hero-view-work-btn"
+                  onClick={() => scrollTo('projects')}
+                  className="btn-primary group justify-center"
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.97 }}
                 >
-                  View My Projects
-                  <ArrowUpRight
-                    size={15}
-                    className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  View My Work
+                  <ArrowDown
+                    size={14}
+                    className="transition-transform group-hover:translate-y-0.5"
                   />
                 </motion.button>
                 <motion.button
-                  onClick={scrollToContact}
-                  className="btn-secondary w-full justify-center"
+                  id="hero-contact-btn"
+                  onClick={() => scrollTo('contact')}
+                  className="btn-secondary justify-center"
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.97 }}
                 >
-                  Let&apos;s Connect
+                  Get in Touch
                 </motion.button>
               </motion.div>
             </div>
@@ -223,17 +161,17 @@ export default function Hero() {
         </div>
       </motion.div>
 
-      {/* Scroll indicator */}
+      {/* ── Scroll cue ───────────────────────────── */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.4 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-[#bbbbbb]"
+        transition={{ delay: 1.6 }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-[#cccccc]"
       >
-        <span className="text-xs font-medium tracking-widest uppercase">Scroll</span>
-        <motion.div animate={{ y: [0, 8, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
-          <ArrowDown size={14} />
+        <motion.div animate={{ y: [0, 7, 0] }} transition={{ duration: 1.6, repeat: Infinity }}>
+          <ArrowDown size={13} />
         </motion.div>
+        <span className="text-[0.6rem] uppercase tracking-[0.2em] font-medium">Scroll</span>
       </motion.div>
     </section>
   )
