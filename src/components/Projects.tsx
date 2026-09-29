@@ -85,87 +85,61 @@ export default function Projects() {
                     isLarge ? 'md:col-span-2' : ''
                   }`}
                 >
-                  {/* ── Image / visual area (Phone Mockup) ─── */}
+                  {/* ── Image / visual area ─── */}
                   <div
-                    className={`relative overflow-hidden flex items-end justify-center pt-8 px-8 ${
+                    className={`relative overflow-hidden ${
                       isAcademy
-                        ? 'bg-gradient-to-br from-pink-50 via-[#fcfcfc] to-violet-50 border-b border-pink-100/50'
-                        : 'bg-[#f0ede8] border-b border-[#e0ddd7]'
+                        ? 'bg-gradient-to-br from-pink-100 via-white to-violet-100'
+                        : 'bg-[#111111]'
                     }`}
-                    style={{ height: isLarge ? '320px' : '280px' }}
+                    style={{ height: isLarge ? '260px' : '200px' }}
                   >
-                    {/* Academy App — gradient accent line at top */}
+                    {/* Grid pattern for non-Academy cards */}
+                    {!isAcademy && (
+                      <div
+                        className="absolute inset-0 opacity-10"
+                        style={{
+                          backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
+                          backgroundSize: '40px 40px',
+                        }}
+                      />
+                    )}
+
+                    {/* Academy App — gradient accent line */}
                     {isAcademy && (
                       <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-pink-300 via-purple-300 to-violet-400" />
                     )}
 
-                    {/* Private badge in corner */}
-                    {isAcademy && project.isPrivate && (
-                      <div className="absolute top-4 right-4 z-20">
-                        <span className="inline-flex items-center gap-1 text-[0.65rem] text-amber-600 bg-amber-50 border border-amber-100 rounded-full px-2 py-0.5 font-bold uppercase tracking-wide shadow-sm">
+                    {/* Center icon / emoji */}
+                    <div className="absolute inset-0 flex flex-col items-center justify-center">
+                      <span className="text-5xl mb-3">
+                        {subtitleIcons[project.subtitle] ?? '💻'}
+                      </span>
+                      <span
+                        className={`text-xs font-medium tracking-widest uppercase ${
+                          isAcademy ? 'text-[#aaaaaa]' : 'text-white/40'
+                        }`}
+                      >
+                        {project.subtitle}
+                      </span>
+                      {isAcademy && project.isPrivate && (
+                        <span className="mt-2 inline-flex items-center gap-1 text-[0.65rem] text-amber-600 bg-amber-50 border border-amber-100 rounded-full px-2 py-0.5 font-bold uppercase tracking-wide">
                           <Lock size={8} /> Private
                         </span>
-                      </div>
-                    )}
+                      )}
+                    </div>
 
-                    {/* 📱 The Phone Mockup */}
-                    <motion.div
-                      initial={{ y: 20 }}
-                      whileHover={{ y: -5 }}
-                      transition={{ type: 'spring', stiffness: 200, damping: 20 }}
-                      className="relative rounded-[32px] overflow-hidden flex-shrink-0 z-10"
-                      style={{
-                        width: '160px',
-                        height: '300px', // slightly taller so bottom cuts off at card edge
-                        background: '#111111',
-                        border: '1.5px solid rgba(0,0,0,0.12)',
-                        boxShadow: '0 -10px 40px rgba(0,0,0,0.1)',
-                        marginBottom: '-20px', // Push bottom edge down to clip
-                      }}
+                    {/* Hover overlay */}
+                    <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                    {/* Corner number */}
+                    <div
+                      className={`absolute top-4 left-4 font-display text-4xl font-bold leading-none ${
+                        isAcademy ? 'text-pink-200/60' : 'text-white/20'
+                      }`}
                     >
-                      {/* Notch */}
-                      <div className="absolute top-2.5 left-1/2 -translate-x-1/2 w-14 h-3.5 rounded-full z-10 bg-[#222222]" />
-
-                      {/* Screen grid pattern */}
-                      <div
-                        className="absolute inset-0 opacity-[0.07]"
-                        style={{
-                          backgroundImage: `linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)`,
-                          backgroundSize: '20px 20px',
-                        }}
-                      />
-
-                      {/* Content inside phone screen */}
-                      <div className="absolute inset-0 flex flex-col items-center justify-center pt-8 px-5">
-                        {/* Huge project number */}
-                        <div className="font-display text-white/[0.15] text-6xl font-bold leading-none mb-6">
-                          {`0${project.id}`}
-                        </div>
-                        
-                        {/* Title inside phone */}
-                        <div className="text-white/80 text-[11px] font-semibold text-center mb-3 truncate w-full">
-                          {project.title}
-                        </div>
-
-                        {/* Abstract text lines */}
-                        <div className="space-y-2.5 w-full flex flex-col items-center">
-                          <div className="rounded-full h-1 bg-white/20 w-[85%]" />
-                          <div className="rounded-full h-1 bg-white/20 w-[65%]" />
-                          <div className="rounded-full h-1 bg-white/20 w-[75%]" />
-                        </div>
-                      </div>
-
-                      {/* Status bar */}
-                      <div className="absolute top-3 left-4 right-4 flex justify-between items-center z-20">
-                        <span className="text-white/40 text-[8px] font-medium">9:41</span>
-                        <div className="flex gap-1">
-                          <div className="w-3 h-1.5 rounded-sm bg-white/20" />
-                        </div>
-                      </div>
-
-                      {/* Home indicator */}
-                      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 w-12 h-0.5 rounded-full bg-white/20" />
-                    </motion.div>
+                      0{project.id}
+                    </div>
                   </div>
 
                   {/* ── Card content ─── */}
