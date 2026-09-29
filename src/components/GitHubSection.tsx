@@ -1,7 +1,7 @@
 'use client'
 
 import { motion, useInView } from 'framer-motion'
-import { useRef } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import { Github, Star, GitFork, ExternalLink, Code2, Linkedin } from 'lucide-react'
 import { personalInfo } from '@/data/portfolio'
 import { githubConfig } from '@/data/githubData'
@@ -21,9 +21,32 @@ const profileRepo = {
 function ContributionGraph() {
   const weeks = 20
   const days = 7
-  const cells = Array.from({ length: weeks * days }, () => ({
-    intensity: Math.random(),
-  }))
+  const [cells, setCells] = useState<{ intensity: number }[]>([])
+
+  useEffect(() => {
+    setCells(
+      Array.from({ length: weeks * days }, () => ({
+        intensity: Math.random(),
+      }))
+    )
+  }, [])
+
+  // Show an empty placeholder grid during SSR to prevent hydration errors
+  if (cells.length === 0) {
+    return (
+      <div className="overflow-x-auto">
+        <div className="inline-flex gap-1" style={{ minWidth: `${weeks * 14}px` }}>
+          {Array.from({ length: weeks }).map((_, week) => (
+            <div key={week} className="flex flex-col gap-1">
+              {Array.from({ length: days }).map((_, day) => (
+                <div key={day} className="w-3 h-3 rounded-sm bg-[#111111]/5" />
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="overflow-x-auto">
