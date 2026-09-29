@@ -1,6 +1,6 @@
 'use client'
 
-import dynamic from 'next/dynamic'
+import CursorGlow from '@/components/CursorGlow'
 import Navbar from '@/components/Navbar'
 import Hero from '@/components/Hero'
 import About from '@/components/About'
@@ -14,12 +14,9 @@ import FeaturedProjects from '@/components/FeaturedProjects'
 import Contact from '@/components/Contact'
 import Footer from '@/components/Footer'
 
-// Dynamically import cursor to avoid SSR issues
-const CursorGlow = dynamic(() => import('@/components/CursorGlow'), { ssr: false })
-
 export default function Home() {
   return (
-    <main className="relative min-h-screen">
+    <main className="relative min-h-screen bg-[var(--bg)] text-[var(--text-primary)] transition-colors duration-500">
       <CursorGlow />
       <Navbar />
       <Hero />

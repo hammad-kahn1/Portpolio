@@ -1,28 +1,53 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600;700;800;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* ============================================================
-   CSS CUSTOM PROPERTIES — Editorial B&W Design Tokens
+   CSS CUSTOM PROPERTIES
+   Light: Initial Editorial Theme with #F8F9FA Background
+   Dark:  Warm Obsidian & Champagne Sand Grid Theme (Reference Photo)
    ============================================================ */
 :root {
-  --bg: #f7f6f3;
+  /* Light Theme (Restored to Initial Colors + #F8F9FA Background) */
+  --bg: #F8F9FA;
   --bg-2: #eeece8;
   --bg-card: #ffffff;
   --bg-dark: #111111;
   --text-primary: #111111;
   --text-secondary: #555555;
-  --text-muted: #999999;
+  --text-muted: #888888;
   --accent: #111111;
   --accent-hover: #333333;
   --border: #e0ddd7;
+  --border-subtle: #eae7e1;
   --border-dark: #cccccc;
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
-  --shadow-md: 0 4px 16px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.04);
-  --shadow-lg: 0 10px 40px rgba(0,0,0,0.10), 0 4px 12px rgba(0,0,0,0.06);
-  --shadow-xl: 0 20px 60px rgba(0,0,0,0.14), 0 8px 20px rgba(0,0,0,0.08);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.08);
+  --shadow-gold: none;
+}
+
+html.dark {
+  /* Dark Theme (Warm Obsidian Charcoal & Champagne Sand Gold) */
+  --bg: #0b0b0d;
+  --bg-2: #111114;
+  --bg-card: #131317;
+  --bg-dark: #070709;
+  --text-primary: #f5f5f7;
+  --text-secondary: #a1a1aa;
+  --text-muted: #71717a;
+  --gold-primary: #c4b393;
+  --gold-light: #eed788;
+  --gold-accent: #dfcfad;
+  --gold-gradient: linear-gradient(135deg, #eed788 0%, #c4b393 50%, #ab9a79 100%);
+  --border: rgba(196, 179, 147, 0.18);
+  --border-subtle: rgba(255, 255, 255, 0.05);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.6);
+  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.7);
+  --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.85);
+  --shadow-gold: 0 0 35px rgba(238, 215, 136, 0.18);
 }
 
 /* ============================================================
@@ -36,7 +61,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 80px;
+  scroll-padding-top: 90px;
 }
 
 body {
@@ -47,6 +72,51 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 1.6;
+  position: relative;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* ── Light Mode Background (#F8F9FA Clean Editorial) ── */
+html:not(.dark) body {
+  background-color: #F8F9FA;
+  background-image: none;
+}
+
+/* ── Dark Mode Background (Reference Grid Overlay) ── */
+html.dark body {
+  background-color: #0b0b0d;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.038) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.038) 1px, transparent 1px);
+  background-size: 64px 64px;
+  background-attachment: fixed;
+}
+
+/* Ambient Radial Champagne Halos (Dark Mode only) */
+html.dark body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 20%;
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(circle, rgba(196, 179, 147, 0.06) 0%, rgba(238, 215, 136, 0.02) 45%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(90px);
+}
+
+html.dark body::after {
+  content: '';
+  position: fixed;
+  bottom: 5%;
+  right: 15%;
+  width: 650px;
+  height: 650px;
+  background: radial-gradient(circle, rgba(238, 215, 136, 0.04) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(100px);
 }
 
 /* ============================================================
@@ -59,17 +129,27 @@ body {
   background: var(--bg);
 }
 ::-webkit-scrollbar-thumb {
-  background: #bbbbbb;
-  border-radius: 3px;
+  background: rgba(196, 179, 147, 0.35);
+  border-radius: 4px;
+}
+html:not(.dark) ::-webkit-scrollbar-thumb {
+  background: #cccccc;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #888888;
+  background: rgba(238, 215, 136, 0.6);
+}
+html:not(.dark) ::-webkit-scrollbar-thumb:hover {
+  background: #999999;
 }
 
 /* ============================================================
    SELECTION
    ============================================================ */
 ::selection {
+  background: rgba(238, 215, 136, 0.3);
+  color: #ffffff;
+}
+html:not(.dark) ::selection {
   background: rgba(17, 17, 17, 0.15);
   color: #111111;
 }
@@ -85,29 +165,44 @@ body {
   font-family: 'DM Sans', 'Inter', sans-serif;
 }
 
-/* Large editorial display heading */
+.font-mono-code {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.text-sand {
+  color: #c4b393;
+}
+
+.text-terminal-gold {
+  color: #eed788;
+}
+
+.text-gold-gradient {
+  background: linear-gradient(135deg, #eed788 0%, #c4b393 55%, #dfcfad 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+html:not(.dark) .text-gold-gradient {
+  background: none;
+  -webkit-background-clip: unset;
+  -webkit-text-fill-color: initial;
+  color: #111111;
+}
+
 .display-heading {
   font-family: 'Playfair Display', serif;
   font-weight: 900;
-  font-size: clamp(4rem, 10vw, 10rem);
-  line-height: 0.92;
+  font-size: clamp(3.8rem, 9.5vw, 9.5rem);
+  line-height: 0.88;
   letter-spacing: -0.03em;
-  color: var(--text-primary);
-}
-
-.hero-title {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(2.4rem, 5vw, 4.5rem);
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-  font-weight: 700;
 }
 
 .section-title {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-size: clamp(2rem, 4.2vw, 3.2rem);
   line-height: 1.15;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.02em;
   font-weight: 700;
 }
 
@@ -115,52 +210,104 @@ body {
    LAYOUT UTILITIES
    ============================================================ */
 .section-padding {
-  padding: 5rem 0;
+  padding: 6.5rem 0;
+  position: relative;
 }
 
 @media (max-width: 768px) {
   .section-padding {
-    padding: 3.5rem 0;
+    padding: 4.5rem 0;
   }
+}
+
+/* ============================================================
+   DOUBLE-BEZEL (DOPPELRAND)
+   ============================================================ */
+.double-bezel-outer {
+  border-radius: 2rem;
+  padding: 0.5rem;
+  transition: all 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+html.dark .double-bezel-outer {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(196, 179, 147, 0.18);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.85);
+}
+
+html.dark .double-bezel-outer:hover {
+  border-color: rgba(238, 215, 136, 0.45);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.85), 0 0 35px rgba(238, 215, 136, 0.15);
+}
+
+html:not(.dark) .double-bezel-outer {
+  background: #ffffff;
+  border: 1px solid #e0ddd7;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.05);
+}
+
+html:not(.dark) .double-bezel-outer:hover {
+  border-color: #cccccc;
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.08);
+}
+
+.double-bezel-inner {
+  border-radius: calc(2rem - 0.5rem);
+}
+
+html.dark .double-bezel-inner {
+  background: #111115;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: inset 0 1px 1px rgba(238, 215, 136, 0.12);
+}
+
+html:not(.dark) .double-bezel-inner {
+  background: #ffffff;
+  border: 1px solid #eae7e1;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.8);
 }
 
 /* ============================================================
    CARD STYLES
    ============================================================ */
 .card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  box-shadow: var(--shadow-sm);
-  transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
+  border-radius: 20px;
+  transition: all 0.4s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
-.card:hover {
-  box-shadow: var(--shadow-lg);
+html.dark .card {
+  background: rgba(17, 17, 21, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(196, 179, 147, 0.16);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+}
+
+html.dark .card:hover {
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.8), 0 0 30px rgba(238, 215, 136, 0.14);
   transform: translateY(-4px);
-  border-color: var(--border-dark);
+  border-color: rgba(238, 215, 136, 0.4);
 }
 
-.card-flat {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 16px;
+html:not(.dark) .card {
+  background: #ffffff;
+  border: 1px solid #e0ddd7;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
-.card-dark {
-  background: var(--bg-dark);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 16px;
-  color: #ffffff;
+html:not(.dark) .card:hover {
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.09);
+  transform: translateY(-4px);
+  border-color: #cccccc;
 }
 
 /* ============================================================
    BUTTON STYLES
+   Light: Initial Editorial (Black solid / Transparent border)
+   Dark:  Champagne Sand & Glowing Terminal Gold
    ============================================================ */
 .btn-primary {
-  background: var(--text-primary);
-  color: #ffffff;
-  padding: 0.75rem 2rem;
+  padding: 0.75rem 1.85rem;
   border-radius: 100px;
   font-weight: 600;
   font-size: 0.875rem;
@@ -168,118 +315,149 @@ body {
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  transition: all 0.25s ease;
+  transition: all 0.35s cubic-bezier(0.32, 0.72, 0, 1);
   letter-spacing: 0.01em;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
 }
 
-.btn-primary:hover {
-  background: #333333;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 24px rgba(0,0,0,0.25);
+/* Light Mode: Initial Editorial Button */
+html:not(.dark) .btn-primary {
+  background: #111111;
+  color: #ffffff;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.15);
 }
 
-.btn-primary:active {
-  transform: translateY(0);
+html:not(.dark) .btn-primary:hover {
+  background: #333333;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+/* Dark Mode: Reference Champagne Gold Button */
+html.dark .btn-primary {
+  background: #eed788;
+  color: #0b0b0d;
+  font-weight: 700;
+  box-shadow: 0 4px 24px rgba(238, 215, 136, 0.3);
+}
+
+html.dark .btn-primary:hover {
+  background: #fdf0aa;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(238, 215, 136, 0.45);
 }
 
 .btn-secondary {
-  background: transparent;
-  color: var(--text-primary);
-  padding: 0.75rem 2rem;
+  padding: 0.75rem 1.85rem;
   border-radius: 100px;
   font-weight: 600;
   font-size: 0.875rem;
-  border: 1.5px solid var(--text-primary);
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition: all 0.35s cubic-bezier(0.32, 0.72, 0, 1);
   letter-spacing: 0.01em;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
 }
 
-.btn-secondary:hover {
-  background: var(--text-primary);
-  color: #ffffff;
-  transform: translateY(-1px);
-}
-
-.btn-ghost {
+/* Light Mode: Initial Secondary Button */
+html:not(.dark) .btn-secondary {
   background: transparent;
-  color: var(--text-secondary);
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  font-weight: 500;
-  font-size: 0.875rem;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  color: #111111;
+  border: 1.5px solid #111111;
 }
 
-.btn-ghost:hover {
-  background: var(--bg-2);
-  color: var(--text-primary);
+html:not(.dark) .btn-secondary:hover {
+  background: #111111;
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+/* Dark Mode: Secondary Button */
+html.dark .btn-secondary {
+  background: rgba(196, 179, 147, 0.07);
+  color: #eed788;
+  border: 1px solid rgba(196, 179, 147, 0.25);
+}
+
+html.dark .btn-secondary:hover {
+  background: rgba(196, 179, 147, 0.15);
+  border-color: rgba(238, 215, 136, 0.5);
+  color: #ffffff;
+  transform: translateY(-2px);
 }
 
 /* ============================================================
-   DIVIDERS & SEPARATORS
+   LABEL TAGS & PILLS
    ============================================================ */
-.section-divider {
-  height: 1px;
-  background: var(--border);
-  margin: 0 auto;
-}
-
 .label-tag {
   display: inline-flex;
   align-items: center;
   gap: 0.375rem;
   font-size: 0.75rem;
   font-weight: 600;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--text-muted);
-  padding: 0.35rem 0.9rem;
+  padding: 0.35rem 0.95rem;
   border-radius: 100px;
-  border: 1px solid var(--border-dark);
-  background: var(--bg-2);
 }
 
-/* ============================================================
-   SKILL TAG
-   ============================================================ */
+html:not(.dark) .label-tag {
+  color: #555555;
+  border: 1px solid #cccccc;
+  background: #eeece8;
+}
+
+html.dark .label-tag {
+  color: #eed788;
+  border: 1px solid rgba(196, 179, 147, 0.3);
+  background: rgba(196, 179, 147, 0.08);
+  box-shadow: 0 0 15px rgba(238, 215, 136, 0.1);
+}
+
 .skill-tag {
   display: inline-flex;
   align-items: center;
   gap: 0.375rem;
   font-size: 0.8125rem;
   font-weight: 500;
-  color: var(--text-secondary);
   padding: 0.45rem 0.9rem;
   border-radius: 100px;
-  border: 1px solid var(--border);
-  background: var(--bg-card);
   transition: all 0.2s ease;
   cursor: default;
 }
 
-.skill-tag:hover {
-  border-color: var(--text-primary);
-  color: var(--text-primary);
-  background: var(--bg-2);
+html:not(.dark) .skill-tag {
+  color: #555555;
+  border: 1px solid #e0ddd7;
+  background: #ffffff;
+}
+
+html:not(.dark) .skill-tag:hover {
+  border-color: #111111;
+  color: #111111;
+  background: #eeece8;
+}
+
+html.dark .skill-tag {
+  color: #e4e4e7;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+html.dark .skill-tag:hover {
+  border-color: rgba(196, 179, 147, 0.4);
+  color: #eed788;
+  background: rgba(196, 179, 147, 0.1);
 }
 
 /* ============================================================
    FORM INPUTS
    ============================================================ */
 .form-input {
-  background: var(--bg);
-  border: 1px solid var(--border-dark);
-  border-radius: 10px;
-  color: var(--text-primary);
+  border-radius: 12px;
   padding: 0.875rem 1.125rem;
   width: 100%;
   font-family: inherit;
@@ -288,223 +466,112 @@ body {
   outline: none;
 }
 
-.form-input:focus {
-  border-color: var(--text-primary);
-  background: var(--bg-card);
+html:not(.dark) .form-input {
+  background: #ffffff;
+  border: 1px solid #cccccc;
+  color: #111111;
+}
+
+html:not(.dark) .form-input:focus {
+  border-color: #111111;
   box-shadow: 0 0 0 3px rgba(17, 17, 17, 0.06);
 }
 
-.form-input::placeholder {
-  color: var(--text-muted);
+html.dark .form-input {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(196, 179, 147, 0.2);
+  color: #f5f5f7;
+}
+
+html.dark .form-input:focus {
+  border-color: #eed788;
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 0 0 3px rgba(238, 215, 136, 0.2);
 }
 
 /* ============================================================
-   HOVER ANIMATIONS
-   ============================================================ */
-.card-hover {
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-}
-
-.card-hover:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--shadow-lg);
-}
-
-/* ============================================================
-   ANIMATIONS
-   ============================================================ */
-@keyframes floatY {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-12px); }
-}
-
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes slideInLeft {
-  from { opacity: 0; transform: translateX(-24px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-
-@keyframes drawLine {
-  from { transform: scaleY(0); }
-  to { transform: scaleY(1); }
-}
-
-@keyframes spinSlow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-@keyframes marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-.animate-float-y {
-  animation: floatY 5s ease-in-out infinite;
-}
-
-.animate-float-y-delay {
-  animation: floatY 5s ease-in-out 1.5s infinite;
-}
-
-.animate-marquee {
-  animation: marquee 25s linear infinite;
-}
-
-.animate-spin-slow {
-  animation: spinSlow 16s linear infinite;
-}
-
-/* ============================================================
-   PROJECT CARD IMAGE ZOOM
-   ============================================================ */
-.project-image-wrapper {
-  overflow: hidden;
-  border-radius: 12px;
-}
-
-.project-image-wrapper img {
-  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.project-image-wrapper:hover img {
-  transform: scale(1.06);
-}
-
-/* ============================================================
-   CURSOR
+   RADAR CURSOR
    ============================================================ */
 .cursor-dot {
   pointer-events: none;
   position: fixed;
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
-  background: var(--text-primary);
   transform: translate(-50%, -50%);
   z-index: 9999;
-  transition: transform 0.1s ease;
 }
 
-/* ============================================================
-   CONTACT SECTION DARK VARIANT
-   ============================================================ */
-.contact-section {
-  background: var(--bg-dark);
-  color: #ffffff;
+html:not(.dark) .cursor-dot {
+  background: #111111;
+  box-shadow: none;
 }
 
-.contact-section .form-input {
-  background: rgba(255,255,255,0.06);
-  border-color: rgba(255,255,255,0.12);
-  color: #ffffff;
+html.dark .cursor-dot {
+  background: #eed788;
+  box-shadow: 0 0 10px #eed788, 0 0 20px rgba(238, 215, 136, 0.8);
 }
 
-.contact-section .form-input::placeholder {
-  color: rgba(255,255,255,0.35);
+.cursor-ring {
+  pointer-events: none;
+  position: fixed;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9998;
+  transition: width 0.22s cubic-bezier(0.2, 0, 0.2, 1),
+              height 0.22s cubic-bezier(0.2, 0, 0.2, 1),
+              border-color 0.22s ease,
+              background-color 0.22s ease;
 }
 
-.contact-section .form-input:focus {
-  border-color: rgba(255,255,255,0.4);
-  background: rgba(255,255,255,0.1);
-  box-shadow: 0 0 0 3px rgba(255,255,255,0.06);
+html:not(.dark) .cursor-ring {
+  border: 1px solid rgba(17, 17, 17, 0.25);
 }
 
-.contact-section .btn-primary {
-  background: #ffffff;
-  color: #111111;
+html.dark .cursor-ring {
+  border: 1px solid rgba(196, 179, 147, 0.45);
 }
 
-.contact-section .btn-primary:hover {
-  background: #eeeeee;
-  box-shadow: 0 6px 24px rgba(255,255,255,0.15);
+.cursor-ring.cursor-ring-hover {
+  width: 52px;
+  height: 52px;
 }
 
-/* ============================================================
-   REDUCED MOTION SUPPORT
-   ============================================================ */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-  html {
-    scroll-behavior: auto;
-  }
+html:not(.dark) .cursor-ring.cursor-ring-hover {
+  border-color: rgba(17, 17, 17, 0.7);
+  background-color: rgba(17, 17, 17, 0.04);
 }
 
-/* ============================================================
-   TAILWIND OVERRIDES FOR B&W THEME
-   ============================================================ */
-.text-accent { color: var(--text-primary); }
-.bg-accent { background-color: var(--text-primary); }
-.border-accent { border-color: var(--text-primary); }
-
-/* ============================================================
-   PINK / LAVENDER / BLUSH ACCENT TOKENS
-   ============================================================ */
-:root {
-  --pink-50:  #fdf2f8;
-  --pink-100: #fce7f3;
-  --pink-200: #fbcfe8;
-  --pink-300: #f9a8d4;
-  --pink-400: #f472b6;
-  --blush:    #fce7f3;
-  --lavender-50:  #f5f3ff;
-  --lavender-100: #ede9fe;
-  --lavender-200: #ddd6fe;
-  --lavender-300: #c4b5fd;
-  --lavender-400: #a78bfa;
-  --purple-dark:  #4c1d95;
+html.dark .cursor-ring.cursor-ring-hover {
+  border-color: rgba(238, 215, 136, 0.9);
+  background-color: rgba(238, 215, 136, 0.06);
 }
 
-/* Glass card — pink-tinted glassmorphism */
-.card-glass-pink {
-  background: rgba(252, 231, 243, 0.45);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(249, 168, 212, 0.25);
-  border-radius: 20px;
-  box-shadow: 0 4px 32px rgba(249, 168, 212, 0.10);
+.cursor-ambient {
+  pointer-events: none;
+  position: fixed;
+  width: 380px;
+  height: 380px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9997;
+  filter: blur(35px);
 }
 
-/* GitHub badge chip (used in hero) */
-.github-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.35rem 0.85rem;
-  border-radius: 100px;
-  background: rgba(17, 17, 17, 0.06);
-  border: 1px solid rgba(17, 17, 17, 0.12);
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: #555555;
-  text-decoration: none;
-  transition: all 0.2s ease;
-  letter-spacing: 0.01em;
-}
-.github-badge:hover {
-  background: rgba(17, 17, 17, 0.10);
-  border-color: rgba(17, 17, 17, 0.20);
-  color: #111111;
+html:not(.dark) .cursor-ambient {
+  display: none;
 }
 
-/* Private-repo badge */
+html.dark .cursor-ambient {
+  background: radial-gradient(circle, rgba(238, 215, 136, 0.07) 0%, rgba(196, 179, 147, 0.02) 45%, transparent 70%);
+}
+
 .badge-private {
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
-  background: #fffbeb;
-  color: #b45309;
-  border: 1px solid #fde68a;
   padding: 0.2rem 0.6rem;
   border-radius: 100px;
   font-size: 0.65rem;
@@ -513,10 +580,14 @@ body {
   letter-spacing: 0.08em;
 }
 
-/* Pink gradient top line on featured cards */
-.gradient-line-pink {
-  height: 2px;
-  width: 100%;
-  background: linear-gradient(90deg, #f9a8d4, #a78bfa, #818cf8);
-  border-radius: 2px;
+html:not(.dark) .badge-private {
+  background: #eeece8;
+  color: #555555;
+  border: 1px solid #cccccc;
+}
+
+html.dark .badge-private {
+  background: rgba(196, 179, 147, 0.12);
+  color: #eed788;
+  border: 1px solid rgba(196, 179, 147, 0.3);
 }

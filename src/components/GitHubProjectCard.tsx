@@ -14,7 +14,7 @@ export default function GitHubProjectCard({
   repo,
   index = 0,
 }: GitHubProjectCardProps) {
-  const langColor = repo.language ? (languageColors[repo.language] ?? '#888888') : null
+  const langColor = repo.language ? (languageColors[repo.language] ?? '#f59e0b') : null
 
   const updatedDate = new Date(repo.updated_at).toLocaleDateString('en-US', {
     month: 'short',
@@ -33,33 +33,30 @@ export default function GitHubProjectCard({
       transition={{ duration: 0.5, delay: index * 0.08 }}
       viewport={{ once: true, margin: '-60px' }}
       whileHover={{ y: -5 }}
-      className="card p-5 block group cursor-pointer"
+      className="card p-6 block group cursor-pointer"
     >
-      {/* Top accent bar (pink-to-lavender) */}
-      <div className="w-full h-0.5 bg-gradient-to-r from-pink-300 to-violet-300 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300 mb-4 rounded-full" />
-
       {/* Header */}
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center gap-2 flex-wrap">
-          <Github size={15} className="text-[#666666] flex-shrink-0" />
-          <span className="text-sm font-semibold text-[#111111] font-display group-hover:text-pink-600 transition-colors duration-200">
+          <Github size={16} className="text-amber-500 flex-shrink-0" />
+          <span className="text-sm font-semibold text-stone-900 dark:text-white font-display group-hover:text-amber-500 transition-colors duration-200">
             {repo.name}
           </span>
           {repo.private && (
-            <span className="inline-flex items-center gap-0.5 text-[0.6rem] text-amber-600 bg-amber-50 border border-amber-100 rounded-full px-1.5 py-0.5 font-bold uppercase tracking-wide">
+            <span className="badge-private">
               <Lock size={8} /> Private
             </span>
           )}
         </div>
         <ExternalLink
           size={14}
-          className="text-[#cccccc] group-hover:text-[#555555] transition-colors flex-shrink-0"
+          className="text-stone-400 dark:text-zinc-500 group-hover:text-amber-500 transition-colors flex-shrink-0"
         />
       </div>
 
       {/* Description */}
-      <p className="text-xs text-[#777777] leading-relaxed mb-4 min-h-[2.5rem]">
-        {repo.description ?? 'No description available.'}
+      <p className="text-xs text-stone-600 dark:text-zinc-400 leading-relaxed mb-4 min-h-[2.5rem] font-light">
+        {repo.description ?? 'No description available for this repository.'}
       </p>
 
       {/* Topics */}
@@ -76,18 +73,18 @@ export default function GitHubProjectCard({
       )}
 
       {/* Meta */}
-      <div className="flex items-center gap-4 text-xs text-[#aaaaaa] flex-wrap">
+      <div className="flex items-center gap-4 text-xs text-stone-500 dark:text-zinc-500 flex-wrap pt-3 border-t border-amber-500/10 dark:border-white/5">
         {repo.language && (
-          <span className="flex items-center gap-1.5">
+          <span className="flex items-center gap-1.5 text-stone-700 dark:text-zinc-300">
             <span
               className="w-2.5 h-2.5 rounded-full inline-block flex-shrink-0"
-              style={{ background: langColor ?? '#888' }}
+              style={{ background: langColor ?? '#f59e0b', boxShadow: `0 0 8px ${langColor ?? '#f59e0b'}80` }}
             />
             {repo.language}
           </span>
         )}
         <span className="flex items-center gap-1">
-          <Star size={11} />
+          <Star size={11} className="text-amber-500" />
           {repo.stargazers_count}
         </span>
         <span className="flex items-center gap-1">
